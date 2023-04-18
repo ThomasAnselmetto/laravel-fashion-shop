@@ -1,0 +1,45 @@
+@import "~bootstrap/scss/bootstrap";
+
+.pic {
+    width: 90px;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    height: 100vh;
+    background-image: linear-gradient(to top,
+            #170399 0%,
+            #9cecf2 50%,
+            #f3f7f7 100%);
+}
+
+.modal-content {
+    background-image: linear-gradient(to bottom,
+            #170399 0%,
+            #9cecf2 50%,
+            #f3f7f7 100%);
+}
+
+.bi-trash {
+    border: none;
+    background-color: transparent;
+}
+
+.navbar-bg {
+    background-color: #3626a1;
+}
+
+.table {
+    min-width: 1300px;
+}
+
+.bi-eye {
+    color: #9cecf2;
+}
+
+.bi-pencil {
+    color: #9cecf2;
+}
