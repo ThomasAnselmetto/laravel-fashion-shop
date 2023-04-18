@@ -103,7 +103,7 @@
                     </div>
                 @enderror
                 <div class="preview">
-                    <img src="{{-- $shoe->image --}}" class="w-25" alt="">
+                    <img src="{{$shoe->getImageUri()}}" class="w-25" alt="">
                 </div>
             </div>
             <div class="col-6">

@@ -28,7 +28,7 @@
                     </h5>
                 </div>
                 <div class="col-6">
-                    <img src="{{ $shoe->image }}" class="img-fluid" alt="">
+                    <img src="{{$shoe->getImageUri()}}" class="img-fluid" alt="">
                 </div>
             </div>
         </div>
