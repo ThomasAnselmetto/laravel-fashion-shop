@@ -17,11 +17,11 @@ class ShoeController extends Controller
      */
     public function index()
     {
-        $newShoe = Shoe::orderBy('updated_at', 'DESC')->paginate(7);
-        //dd($newShoe);
+        $shoe = Shoe::orderBy('updated_at', 'DESC')->paginate(7);
+        //dd($shoe);
 
         //$shoes = Shoe::orderBy('updated_at', 'DESC')->paginate(12);
-        return view('admin.shoes.index', compact('newShoe'));
+        return view('admin.shoes.index', compact('shoe'));
     }
 
     /**
@@ -31,7 +31,7 @@ class ShoeController extends Controller
      */
     public function create(Shoe $shoe)
     {
-        $newShoe = new Shoe;
+        $shoe = new Shoe;
         return view('admin.shoes.form', compact('shoe'));
     }
 
@@ -41,7 +41,7 @@ class ShoeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Shoe $shoe)
     {
         $request->validate(
             [
@@ -53,40 +53,43 @@ class ShoeController extends Controller
 
             ],
             [
-                'model' => 'Il modello è richiesto',
-                'model' => 'Il modello deve avere un nome',
-                'model' => 'Lunghezza massima per il nome del modello 50 caratteri',
-                'type' => 'Il tipo è richiesto',
-                'type' => 'Il tipo deve essere una parola',
-                'type' => 'Lunghezza massima per il nome del modello 100 caratteri',
-                'number' => 'Il numero di scarpe è richiesto',
-                'number' => 'Devi inserire un numero',
-                'color' => 'Il colore delle scarpe è richiesto',
-                'color' => 'Puoi inserire solo caratteri minuscoli',
-                'quantity' => 'La quantità è richiesta',
-                'quantity' => 'Devi inserire un numero',
-                'quantity' => 'Il numero minimo inseribile per lo store è di 50 pezzi',
+                'model.required' => 'Il modello è richiesto',
+                'model.string' => 'Il modello deve avere un nome',
+                'model.max' => 'Lunghezza massima per il nome del modello 50 caratteri',
+                'type.required' => 'Il tipo è richiesto',
+                'type.string' => 'Il tipo deve essere una parola',
+                'type.max' => 'Lunghezza massima per il type del modello 100 caratteri',
+                'number.required' => 'Il numero di scarpe è richiesto',
+                'number.integer' => 'Devi inserire un numero',
+                'color.required' => 'Il colore delle scarpe è richiesto',
+                'color.lowercase' => 'Puoi inserire solo caratteri minuscoli',
+                'quantity.required' => 'La quantità è richiesta',
+                'quantity.integer' => 'Devi inserire un numero',
+                'quantity.min' => 'Il numero minimo inseribile per lo store è di 50 pezzi',
 
 
 
             ]
         );
 
-
         $data = $request->all();
 
         $path = null;
         if (Arr::exists($data, 'image')) {
+            if($shoe->image) Storage::delete($shoe->image);
             $path = Storage::put('uploads/shoes', $data['image']);
             //$data['image'] = $path;
         }
 
-        $newShoe = new Shoe;
-        $newShoe->fill($data);
-        $newShoe->image = $path;
-        $newShoe->save();
+        
+        $shoe = new Shoe;
+        $shoe->fill($data);
+        $shoe->image = $path;
+        $shoe->save();
 
-        return to_route('shoes.show', $newShoe)
+        
+
+        return to_route('shoes.show', $shoe)
             ->with('message', 'Prodotto aggiunto con successo');
     }
 
@@ -98,9 +101,9 @@ class ShoeController extends Controller
      */
     public function show(Shoe $shoe)
     {
-        $newShoe = new Shoe;
-        //$newShoe->fill($request->all());
-        //$newShoe->save();
+        $shoe = new Shoe;
+        //$shoe->fill($request->all());
+        //$shoe->save();
         return view('admin.shoes.show', compact('shoe'));
     }
 
@@ -128,20 +131,51 @@ class ShoeController extends Controller
      */
     public function update(Request $request, Shoe $shoe)
     {
+        $request->validate(
+            [
+                'model' => 'required|string|max:50',
+                'type' => 'required|string|max:100',
+                'number' => 'required|integer',
+                'color' => 'required|lowercase',
+                'quantity' => 'required|integer|min:50',
+
+            ],
+            [
+                'model.required' => 'Il modello è richiesto',
+                'model.string' => 'Il modello deve avere un nome',
+                'model.max' => 'Lunghezza massima per il nome del modello 50 caratteri',
+                'type.required' => 'Il tipo è richiesto',
+                'type.string' => 'Il tipo deve essere una parola',
+                'type.max' => 'Lunghezza massima per il type del modello 100 caratteri',
+                'number.required' => 'Il numero di scarpe è richiesto',
+                'number.integer' => 'Devi inserire un numero',
+                'color.required' => 'Il colore delle scarpe è richiesto',
+                'color.lowercase' => 'Puoi inserire solo caratteri minuscoli',
+                'quantity.required' => 'La quantità è richiesta',
+                'quantity.integer' => 'Devi inserire un numero',
+                'quantity.min' => 'Il numero minimo inseribile per lo store è di 50 pezzi',
+
+
+
+            ]
+        );
+
+
         $data = $request->all();
 
         $path = null;
-        if (Arr::exists($data, 'image')) {
+        if (Arr::exists($data, 'shoe_preview_img')) {
+            if($shoe->image) Storage::delete($shoe->image);
             $path = Storage::put('uploads/shoes', $data['image']);
             //$data['image'] = $path;
         }
 
-        $newShoe = new Shoe;
-        $newShoe->fill($data);
-        $newShoe->image = $path;
-        $newShoe->save();
+        
+        $shoe->fill($data);
+        $shoe->image = $path;
+        $shoe->save();
 
-        return to_route('shoes.show', $newShoe)
+        return to_route('shoes.show', $shoe)
             ->with('message', "La Scarpa $shoe->name è stata modificata con successo");
     }
 
