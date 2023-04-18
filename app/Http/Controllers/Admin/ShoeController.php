@@ -188,7 +188,7 @@ class ShoeController extends Controller
     public function destroy(Shoe $shoe)
     {
         $shoe->delete();
-        return redirect()->route('shoes.index')->with('message', "La Scarpa $shoe->name eliminata");;
+        return redirect()->route('shoes.inde')->with('message', "La Scarpa $shoe->name e' stata spostata nel cestino");;
     }
      /**
      * Display a listing of the trashed resource.
@@ -198,6 +198,30 @@ class ShoeController extends Controller
      */
     
      public function trash(){
-        return view('admin.shoes.trash');
+        return view('admin.shoes.trash',compact('shoes'));
      }
-}
+     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Shoe  $shoe
+     * @return \Illuminate\Http\Response
+     */
+    public function forceDelete(Int $id)
+    {   $shoe = Shoe::where('id',$id)->onlyTrashed()->first();
+        $shoe->forceDelete();
+        return redirect()->route('shoes.trash')->with('message', "La Scarpa $id eliminata Definitivamente");;
+    }
+     /**
+     * restore the specified resource from storage.
+     *
+     * @param  \App\Models\Shoe  $shoe
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Int $id)
+    {   $shoe = Shoe::where('id',$id)->onlyTrashed()->first();
+        $shoe->restore();
+        return redirect()->route('shoes.index')->with('message', "La Scarpa $id ripristinato");;
+    }
+
+
+    }

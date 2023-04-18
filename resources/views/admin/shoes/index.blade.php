@@ -77,7 +77,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Annulla</button>
-                            <form action="{{ route('shoes.destroy', $shoe) }}" method="POST">
+                            <form action="{{ route('shoes.trash', $shoe) }}" method="POST">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-primary fw-bold">Conferma</button>

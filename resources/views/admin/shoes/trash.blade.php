@@ -27,11 +27,12 @@
                 <th scope="col">Numero</th>
                 <th scope="col">Colere</th>
                 <th scope="col">Quantità</th>
-                <th scope="col">Gestione</th>
+                <th scope="col">Deleted_at</th>
+                {{-- <th scope="col">Gestione</th> --}}
             </tr>
         </thead>
         <tbody>
-            @forelse ($newShoe as $shoe)
+            @forelse ($shoes as $shoe)
                 <tr>
                     <th scope="row">{{ $shoe->id }}</th>
                     <div class="pic">
@@ -44,17 +45,20 @@
                     <td>{{ $shoe->number }}</td>
                     <td>{{ $shoe->color }}</td>
                     <td>{{ $shoe->quantity }}</td>
+                    <td>{{ $shoe->deleted_at }}</td>
                     <td>
 
 
-                        <a href="{{ route('shoes.show', $shoe) }}">
+                        {{-- <a href="{{ route('shoes.show', $shoe) }}">
                             <i class="bi bi-eye fs-4"></i>
                         </a>
                         <a href="{{ route('shoes.edit', $shoe) }}">
                             <i class="bi bi-pencil fs-4"></i>
-                        </a>
+                        </a> --}}
                         <button class="bi bi-trash text-danger fs-4" data-bs-toggle="modal"
                             data-bs-target="#delete-{{ $shoe->id }}"></button>
+                            <button class="bi bi-arrow-up-left-square-fill text-success fs-4" data-bs-toggle="modal"
+                            data-bs-target="#restore-{{ $shoe->id }}"></button>
                     </td>
                 </tr>
             @empty
@@ -63,7 +67,7 @@
     </table>
 
     @section('modals')
-        @foreach ($newShoe as $shoe)
+        @foreach ($shoes as $shoe)
             <div class="modal fade" id="delete-{{ $shoe->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -86,10 +90,32 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="restore-{{ $shoe->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h1 class="modal-title fs-5 text-light fw-bold" id="exampleModalLabel">{{ $shoe->model }}</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body fw-bold">
+                          Vuoi ripristinare questa scarpa?
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Annulla</button>
+                          <form action="{{ route('shoes.destroy', $shoe) }}" method="POST">
+                              @csrf
+                              @method('restore')
+                              <button type="submit" class="btn btn-success fw-bold">Conferma</button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
         @endforeach
     @endsection
 
-    {{ $newShoe->links() }}
+    {{ $shoes->links() }}
 @endsection
 
 
