@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Le nostre Shoes')
+@section('title', 'Scarpe fuori catalogo')
 
 @section('actions')
     <div>
-        <a href="{{ route('shoes.create') }}" class="btn btn-primary my-4 fw-bold">
-            Inserisci una nuova scarpa
+        <a href="{{ route('admin.shoes.index') }}" class="btn btn-primary my-4 fw-bold">
+            Torna alle Scarpe
         </a>
     </div>
 @endsection
@@ -31,7 +31,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($shoes as $shoe)
+            @forelse ($newShoe as $shoe)
                 <tr>
                     <th scope="row">{{ $shoe->id }}</th>
                     <div class="pic">
@@ -63,7 +63,7 @@
     </table>
 
     @section('modals')
-        @foreach ($shoes as $shoe)
+        @foreach ($newShoe as $shoe)
             <div class="modal fade" id="delete-{{ $shoe->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -89,7 +89,7 @@
         @endforeach
     @endsection
 
-    {{ $shoes->links() }}
+    {{ $newShoe->links() }}
 @endsection
 
 

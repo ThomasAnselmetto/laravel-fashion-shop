@@ -23,8 +23,13 @@ Route::get('/', [AdminHomeController::class, 'index'])->middleware('auth')->name
 
 Route::get('/', [GuestHomeController::class, 'index'])->middleware('auth')->name('home');
 
+Route::get('/shoes/trash',[ShoeController::class, 'trash'])->name('shoes.trash');
+
+Route::get('/shoes/{shoe}/restore',[ShoeController::class, 'restore'])->name('shoes.restore');
+
+Route::get('/shoes/{shoe}/force-delete',[ShoeController::class, 'forceDelete'])->name('shoes.force-delete');
+
 Route::resource( 'shoes', ShoeController::class);
-       
 
 Route::get('/dashboard', function () {
     return view('dashboard');

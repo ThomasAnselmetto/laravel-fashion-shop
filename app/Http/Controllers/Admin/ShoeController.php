@@ -17,11 +17,11 @@ class ShoeController extends Controller
      */
     public function index()
     {
-        $shoe = Shoe::orderBy('updated_at', 'DESC')->paginate(7);
+        $shoes = Shoe::orderBy('updated_at', 'DESC')->paginate(7);
         //dd($shoe);
 
         //$shoes = Shoe::orderBy('updated_at', 'DESC')->paginate(12);
-        return view('admin.shoes.index', compact('shoe'));
+        return view('admin.shoes.index', compact('shoes'));
     }
 
     /**
@@ -32,7 +32,7 @@ class ShoeController extends Controller
     public function create(Shoe $shoe)
     {
         $shoe = new Shoe;
-        return view('admin.shoes.form', compact('shoe'));
+        return view('admin.shoes.form', compact('shoes'));
     }
 
     /**
@@ -104,7 +104,7 @@ class ShoeController extends Controller
         $shoe = new Shoe;
         //$shoe->fill($request->all());
         //$shoe->save();
-        return view('admin.shoes.show', compact('shoe'));
+        return view('admin.shoes.show', compact('shoes'));
     }
 
     /**
@@ -119,7 +119,7 @@ class ShoeController extends Controller
 
         $shoe->fill($data);
         $shoe->save();
-        return view('admin.shoes.form', compact('shoe'));
+        return view('admin.shoes.form', compact('shoes'));
     }
 
     /**
@@ -188,6 +188,16 @@ class ShoeController extends Controller
     public function destroy(Shoe $shoe)
     {
         $shoe->delete();
-        return redirect()->route('shoes.index')->with('message', "La Scarpa $shoe->name è stata eliminata!sei veramente un pazzo");;
+        return redirect()->route('shoes.index')->with('message', "La Scarpa $shoe->name eliminata");;
     }
+     /**
+     * Display a listing of the trashed resource.
+     * 
+     *@param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    
+     public function trash(){
+        return view('admin.shoes.trash');
+     }
 }
